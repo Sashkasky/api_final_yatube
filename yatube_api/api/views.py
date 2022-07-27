@@ -1,12 +1,13 @@
 from django.shortcuts import get_object_or_404
 
-from rest_framework import filters, mixins, viewsets
+from rest_framework import filters, viewsets
 from rest_framework.pagination import LimitOffsetPagination
 
 from api.serializers import (CommentSerializer, FollowSerializer,
                              GroupSerializer, PostSerializer)
 from posts.models import Comment, Follow, Group, Post
 from .permissions import AuthorOrReadOnly
+from .mixins import CreateRetrieveViewSet
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -49,12 +50,6 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def perform_destroy(self, serializer):
         serializer.delete()
-
-
-class CreateRetrieveViewSet(mixins.CreateModelMixin,
-                            mixins.ListModelMixin,
-                            viewsets.GenericViewSet):
-    pass
 
 
 class FollowViewSet(CreateRetrieveViewSet):
